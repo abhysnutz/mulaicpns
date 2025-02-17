@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Province;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -49,6 +50,8 @@ class ProvinceSeeder extends Seeder
             ['id' => 92, 'name' => 'Papua Barat'],
         ];
 
-        \DB::table('provinces')->insert($provinces);
+        foreach ($provinces as $province) {
+            Province::create($province);
+        }
     }
 }

@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div>
-                    @if (session('status') === 'profile-updated' || session('status') === 'password-updated')
+                    @if (session('status') === 'account-updated' || session('status') === 'profile-updated' || session('status') === 'password-updated')
                         <div class="rounded-md bg-green-50 p-4 my-5">
                             <div class="flex">
                                 <div class="flex-shrink-0">
@@ -55,8 +55,10 @@
                                         Berhasil!
                                     </p>
                                     <p class="text-sm font-medium text-green-800">
-                                        @if (session('status') === 'profile-updated')
+                                        @if (session('status') === 'account-updated')
                                             Informasi akun berhasil disimpan
+                                        @elseif (session('status') === 'profile-updated')
+                                            Informasi profil berhasil disimpan
                                         @elseif(session('status') === 'password-updated')
                                             Password baru berhasil disimpan.
                                         @endif
@@ -114,6 +116,17 @@
                             </div>
                         </div>
                     @endif
+                    @if ($errors->any())
+                        <div class="mb-4">
+                            <div class="font-medium text-red-600">
+                                Whoops! Terjadi kesalahan.
+                            </div>
+                            {{-- <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+                                @foreach ($errors->get('email') as $error) <li>{{ $error }}</li> @endforeach
+                                @foreach ($errors->get('password') as $error) <li>{{ $error }}</li> @endforeach
+                            </ul> --}}
+                        </div>
+                    @endif
                     
                     <div class="xl:grid xl:grid-cols-12 xl:space-y-0 space-y-4 xl:space-x-4">
                         <div class="xl:col-span-3">
@@ -121,10 +134,10 @@
                                 <div class="flex-shrink-0 flex border-b border-gary-300 px-4 pb-4">
                                     <div class="flex-shrink-0 w-full group block">
                                         <div class="flex items-center">
-                                            <div><img src="https://ui-avatars.com/api/?name=Mohamad Syafri Lamato&amp;background=6366f1&amp;color=fff" alt="" class="h-8 sm:h-10 w-8 sm:w-10 rounded-full" /></div>
+                                            <div><img src="https://ui-avatars.com/api/?name={{ $user?->name }}&amp;background=6366f1&amp;color=fff" alt="" class="h-8 sm:h-10 w-8 sm:w-10 rounded-full" /></div>
                                             <div class="ml-3 truncate">
-                                                <p class="text-sm font-medium text-gray-800 truncate">Mohamad Syafri Lamato</p>
-                                                <p class="text-xs font-medium text-gray-500 group-hover:text-gray-800 truncate">maps.abhy25@gmail.com</p>
+                                                <p class="text-sm font-medium text-gray-800 truncate">{{ $user?->name }}</p>
+                                                <p class="text-xs font-medium text-gray-500 group-hover:text-gray-800 truncate">{{ $user?->email }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -167,103 +180,75 @@
                                             <input readonly name="email" type="email" placeholder="Alamat email" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3 bg-gray-200" value="{{ $user?->email }}"/>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="type" value="akun">
                                     <button type="submit" class="mt-5 bg-blackinline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-offset-2 focus:ring-indigo-500" >
                                         Simpan Perubahan
                                     </button>
                                 </form>
                             </div>
                             <div class="hidden profile profil">
-                                <form>
+                                <form method="post" action="{{ route('profile.update') }}">
+                                    @csrf
+                                    @method('patch')
+
                                     <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-4">
                                         <div class="grid grid-cols-1 gap-4">
                                             <div>
                                                 <label class="text-sm font-medium">Telepon:</label>
-                                                <input type="text" placeholder="Telepon" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3" />
+                                                <input name="phone" type="text" placeholder="Telepon" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3" value="{{ $user?->detail?->phone }}"/>
                                             </div>
                                             <div>
                                                 <label class="text-sm font-medium">Tanggal Lahir Anda: -</label>
-                                                <input type="date" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3" />
+                                                <input name ="birth" type="date" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3" value="{{ $user?->detail?->birth }}"/>
                                             </div>
                                             <div>
                                                 <label class="text-sm font-medium">Pendidikan Terakhir:</label>
-                                                <select class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3">
+                                                <select name="education" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3">
                                                     <option selected="selected" value="" disabled="disabled">-- Pilih Pendidikan --</option>
-                                                    <option value="SD">SD/MI Sederajat</option>
-                                                    <option value="SMP">SMP/MTs Sederajat</option>
-                                                    <option value="SMA">SMA/SMK/MA Sederajat</option>
-                                                    <option value="D1">D1</option>
-                                                    <option value="D2">D2</option>
-                                                    <option value="D3">D3</option>
-                                                    <option value="D4">D4</option>
-                                                    <option value="S1">S1</option>
-                                                    <option value="S2">S2</option>
-                                                    <option value="S3">S3</option>
+                                                    <option value="SD" @if($user?->detail?->education == 'SD') selected @endif>SD/MI Sederajat</option>
+                                                    <option value="SMP" @if($user?->detail?->education == 'SMP') selected @endif>SMP/MTs Sederajat</option>
+                                                    <option value="SMA" @if($user?->detail?->education == 'SMA') selected @endif>SMA/SMK/MA Sederajat</option>
+                                                    <option value="D1" @if($user?->detail?->education == 'D1') selected @endif>D1</option>
+                                                    <option value="D2" @if($user?->detail?->education == 'D2') selected @endif>D2</option>
+                                                    <option value="D3" @if($user?->detail?->education == 'D3') selected @endif>D3</option>
+                                                    <option value="D4" @if($user?->detail?->education == 'D4') selected @endif>D4</option>
+                                                    <option value="S1" @if($user?->detail?->education == 'S1') selected @endif>S1</option>
+                                                    <option value="S2" @if($user?->detail?->education == 'S2') selected @endif>S2</option>
+                                                    <option value="S3" @if($user?->detail?->education == 'S3') selected @endif>S3</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="grid grid-cols-1 gap-4">
                                             <div>
                                                 <label class="text-sm font-medium">Jurusan:</label>
-                                                <input type="text" placeholder="Jurusan" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3" />
+                                                <input name="major" type="text" placeholder="Jurusan" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3" value="{{ $user?->detail?->major }}"/>
                                             </div>
                                             <div>
                                                 <label class="text-sm font-medium">Provinsi:</label>
-                                                <select class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3">
-                                                    <option value="" selected="selected" disabled="disabled">-- Pilih Provinsi --</option>
-                                                    <option value="1">Bali</option>
-                                                    <option value="2">Bangka Belitung</option>
-                                                    <option value="3">Banten</option>
-                                                    <option value="4">Bengkulu</option>
-                                                    <option value="5">DI Yogyakarta</option>
-                                                    <option value="6">DKI Jakarta</option>
-                                                    <option value="7">Gorontalo</option>
-                                                    <option value="8">Jambi</option>
-                                                    <option value="9">Jawa Barat</option>
-                                                    <option value="10">Jawa Tengah</option>
-                                                    <option value="11">Jawa Timur</option>
-                                                    <option value="12">Kalimantan Barat</option>
-                                                    <option value="13">Kalimantan Selatan</option>
-                                                    <option value="14">Kalimantan Tengah</option>
-                                                    <option value="15">Kalimantan Timur</option>
-                                                    <option value="16">Kalimantan Utara</option>
-                                                    <option value="17">Kepulauan Riau</option>
-                                                    <option value="18">Lampung</option>
-                                                    <option value="19">Maluku</option>
-                                                    <option value="20">Maluku Utara</option>
-                                                    <option value="21">Nanggroe Aceh Darussalam (NAD)</option>
-                                                    <option value="22">Nusa Tenggara Barat (NTB)</option>
-                                                    <option value="23">Nusa Tenggara Timur (NTT)</option>
-                                                    <option value="24">Papua</option>
-                                                    <option value="25">Papua Barat</option>
-                                                    <option value="26">Riau</option>
-                                                    <option value="27">Sulawesi Barat</option>
-                                                    <option value="28">Sulawesi Selatan</option>
-                                                    <option value="29">Sulawesi Tengah</option>
-                                                    <option value="30">Sulawesi Tenggara</option>
-                                                    <option value="31">Sulawesi Utara</option>
-                                                    <option value="32">Sumatera Barat</option>
-                                                    <option value="33">Sumatera Selatan</option>
-                                                    <option value="34">Sumatera Utara</option>
+                                                <select name="province_id" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3 get-city">
+                                                    <option value="0" selected="selected" disabled="disabled">-- Pilih Provinsi --</option>
+                                                    @if ($provinces->count())
+                                                        @foreach ($provinces as $province)
+                                                            <option value="{{ $province?->id }}" @if($province?->id == $user?->detail?->province_id) selected @endif>{{ $province?->name }}</option>
+                                                        @endforeach    
+                                                    @endif
                                                 </select>
                                             </div>
                                             <div>
                                                 <label class="text-sm font-medium">Kota/Kabupaten:</label>
-                                                <select class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3">
-                                                    <option value="" selected="selected" disabled="disabled">-- Pilih Kota/Kabupaten --</option>
-                                                    <option value="46">Kabupaten Boalemo</option>
-                                                    <option value="47">Kabupaten Bone Bolango</option>
-                                                    <option value="48">Kabupaten Gorontalo</option>
-                                                    <option value="49">Kota Gorontalo</option>
-                                                    <option value="50">Kabupaten Gorontalo Utara</option>
-                                                    <option value="51">Kabupaten Pohuwato</option>
+                                                <select id="container-city" name="city_id" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3">
+                                                    <option value="0" selected="selected" disabled="disabled">-- Pilih Kota/Kabupaten --</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div>
                                             <label class="text-sm font-medium">Alamat:</label>
-                                            <textarea cols="30" rows="5" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3"></textarea>
+                                            <textarea name="address" cols="30" rows="5" class="shadow-sm mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-3"> {{ $user?->detail?->address }}</textarea>
                                         </div>
                                     </div>
+                                    <input type="hidden" id="city_id" value="{{ $user?->detail?->city_id }}">
+                                    <input type="hidden" name="type" value="profil">
+
                                     <button type="submit" class="mt-5 bg-blackinline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-offset-2 focus:ring-indigo-500" >
                                         Simpan Profil
                                     </button>
@@ -304,6 +289,8 @@
 @push('js-bottom')
     <script>
         $(document).ready(function(){
+            
+
             $(document).on('click', '.profile-button', function(){
                 let data = $(this).data('profile');
                 
@@ -317,6 +304,39 @@
                 $('.profile').removeClass('block').addClass('hidden')
                 $(`.profile.${data}`).removeClass('hidden').addClass('block')
             })
+
+            $(document).on('change', '.get-city', function(){
+                let province_id = $(this).val()
+                getCity(province_id)
+            })
+
+            function getCity(province_id){
+                $.ajax({
+                    url : "{{ route('profile.city') }}",
+                    data : {province_id},
+                    success : function(reply){
+                        if(reply.status == 1){
+                            $('#container-city').empty()
+                            $.each(reply.data, function(k,v){
+                                $('#container-city').append(`
+                                    <option value="${v.id}">${v.name}</option>
+                                `)
+                            })
+                        }
+                    }
+                })    
+            }
+
+            let province = $('.get-city').val()
+            if(province > 0){
+                getCity(province)
+                setTimeout(() => {
+                    $('#container-city').val($('#city_id').val());
+                }, 1000);
+            }
+
+           
+            
         })
     </script>
 @endpush

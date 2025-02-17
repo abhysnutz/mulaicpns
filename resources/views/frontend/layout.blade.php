@@ -106,7 +106,7 @@
                                             </div>
                                             <div class="flex-shrink-0 group block mt-8">
                                                 <div class="flex items-center">
-                                                    <img src="https://ui-avatars.com/api/?name=test&amp;background=fff&amp;color=6366f1" alt="" class="h-11 w-11 rounded-full">
+                                                    <img src="https://ui-avatars.com/api/?name={{ Auth::user()?->name }}&amp;background=fff&amp;color=6366f1" alt="" class="h-11 w-11 rounded-full">
                                                     <div class="ml-4">
                                                         <p class="text-base font-medium text-white">test</p>
                                                         <div class="-mt-1">
@@ -314,7 +314,7 @@
                                     <div>
                                         <button id="user-menu" aria-haspopup="true" class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                             <span class="sr-only">Open user menu</span>
-                                            <img src="https://ui-avatars.com/api/?name=test&amp;background=6366f1&amp;color=fff" alt="" class="h-8 w-8 rounded-full">
+                                            <img src="https://ui-avatars.com/api/?name={{ Auth::user()?->name }}&amp;background=6366f1&amp;color=fff" alt="" class="h-8 w-8 rounded-full">
                                         </button>
                                     </div>
                                     <!---->

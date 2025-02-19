@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('tryouts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->enum('category', ['Try Out', 'Latihan TWK', 'Latihan TIU', 'Latihan TKP']);
-            $table->foreignId('source_id')->constrained('tryout_sources')->onDelete('cascade');
+            $table->string('title');
+            $table->enum('category', ['Tryout', 'Latihan TWK', 'Latihan TIU', 'Latihan TKP']);
+            $table->foreignId('tryout_source_id')->constrained('tryout_sources')->onDelete('cascade')->nullable();
             $table->timestamps();
         });
     }

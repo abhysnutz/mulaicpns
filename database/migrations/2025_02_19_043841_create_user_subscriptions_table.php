@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_subscriptions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->timestamp('start_date')->nullable();
-            $table->timestamp('end_date')->nullable();
-            $table->enum('status', ['active', 'expired'])->default('active');
-            $table->timestamps();
+            $table->id(); // ID unik langganan
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // ID pengguna
+            $table->enum('status', ['Active', 'Expired', 'Canceled']); // Status langganan
+            $table->date('start_date'); // Tanggal mulai langganan
+            $table->date('end_date'); // Tanggal berakhir langganan
+            $table->timestamps(); // Kolom created_at dan updated_at
         });
     }
 

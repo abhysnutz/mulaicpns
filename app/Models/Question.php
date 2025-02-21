@@ -19,4 +19,8 @@ class Question extends Model
     public function users(){
         return $this->hasMany(UserAnswer::class);
     }
+
+    public function topic(){
+        return $this->belongsTo(QuestionTopic::class);
+    }
 }

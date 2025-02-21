@@ -22,6 +22,7 @@
         <meta property="og:title" content="AYOPPPK - Belajar, Tryout dan Latihan Soal PPPK">
         <meta property="og:description" content="AYOPPPK merupakan website belajar online untuk persiapan seleksi PPPK. Belajar secara mudah dan praktis dengan beragam latihan soal CAT PPPK. Dilengkapi dengan pembahasan soal, grafik informatif dan berlatih manajemen waktu.">
         <meta property="og:type" content="website">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
     <body inmaintabuse="1"> 
         <div>
@@ -64,6 +65,13 @@
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script>
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        </script>
         @stack('js-bottom')
         <iframe allow="join-ad-interest-group" data-tagging-id="AW-11327116374" data-load-time="1739631326943" height="0" width="0" src="https://td.doubleclick.net/td/rul/11327116374?random=1739631326936&amp;cv=11&amp;fst=1739631326936&amp;fmt=3&amp;bg=ffffff&amp;guid=ON&amp;async=1&amp;gtm=45be52d0za200&amp;gcd=13l3l3l3l1l1&amp;dma=0&amp;tag_exp=102067808~102482433~102539968~102558064~102587591~102605417~102640599&amp;u_w=1536&amp;u_h=864&amp;url=https%3A%2F%2Fayopppk.com%2Fverify-email&amp;ref=https%3A%2F%2Fayopppk.com%2Fdaftar&amp;hn=www.googleadservices.com&amp;frm=0&amp;tiba=%7C%20Belajar%2C%20Tryout%20dan%20Latihan%20Soal%20PPPK&amp;npa=0&amp;pscdl=noapi&amp;auid=316036945.1739498899&amp;uaa=x86&amp;uab=64&amp;uafvl=Not(A%253ABrand%3B99.0.0.0%7CGoogle%2520Chrome%3B133.0.6943.98%7CChromium%3B133.0.6943.98&amp;uamb=0&amp;uam=&amp;uap=Windows&amp;uapv=15.0.0&amp;uaw=0&amp;fledge=1&amp;data=event%3Dgtag.config" style="display: none; visibility: hidden;"></iframe>
         <iframe height="0" width="0" style="display: none; visibility: hidden;"></iframe>

@@ -14,9 +14,9 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('frontend.dashboard.index');
-})->middleware(['auth'])->name('dashboard.index');
+})->middleware(['auth','examDirect'])->name('dashboard.index');
 
-Route::group(['middleware' => 'auth', 'as' => 'profile.'], function () {
+Route::group(['middleware' => ['auth','examDirect'], 'as' => 'profile.'], function () {
     Route::get('profile', [ProfileController::class, 'edit'])->name('edit');
     Route::get('city', [ProfileController::class, 'city'])->name('city');
     Route::patch('profile', [ProfileController::class, 'update'])->name('update');
@@ -24,11 +24,16 @@ Route::group(['middleware' => 'auth', 'as' => 'profile.'], function () {
 });
 
 Route::group(['prefix' => 'tryout', 'middleware' => ['auth'], 'as' => 'tryout.'], function () {
-    Route::get('/', [TryoutController::class, 'index'])->name('index');
-    Route::get('{id}/prepare', [TryoutController::class, 'prepare'])->name('prepare');
+    Route::get('/', [TryoutController::class, 'index'])->name('index')->middleware('examDirect');
+    Route::get('{id}/prepare', [TryoutController::class, 'prepare'])->name('prepare')->middleware('examDirect');
     Route::post('exam', [TryoutController::class, 'exam'])->name('exam');
     Route::get('{id}/working', [TryoutController::class, 'working'])->name('working');
+    Route::get('questions', [TryoutController::class, 'questions'])->name('questions');
     Route::get('question', [TryoutController::class, 'question'])->name('question');
+    Route::get('time', [TryoutController::class, 'time'])->name('time');
+    Route::post('answer', [TryoutController::class, 'answer'])->name('answer');
+    Route::post('finish/{id}', [TryoutController::class, 'finish'])->name('finish');
+    Route::post('cancel{id}', [TryoutController::class, 'cancel'])->name('cancel');
 
     Route::group(['prefix' => 'result', 'as' => 'result.'], function () {
         Route::get('/', [ExamController::class, 'index'])->name('index');

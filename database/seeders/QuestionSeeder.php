@@ -28,24 +28,24 @@ class QuestionSeeder extends Seeder
             
             // Contoh soal kategori TIU
             [
-                'tryout_id' => 2,
+                'tryout_id' => 1,
                 'topic_id' => 7, // Analogi
                 'question' => 'Matahari : Siang = Bulan : ?',
             ],
             [
-                'tryout_id' => 2,
+                'tryout_id' => 1,
                 'topic_id' => 8, // Silogisme
                 'question' => 'Jika semua burung bisa terbang dan elang adalah burung, maka elang bisa...?',
             ],
             
             // Contoh soal kategori TKP
             [
-                'tryout_id' => 3,
+                'tryout_id' => 1,
                 'topic_id' => 13, // Pelayanan Publik
                 'question' => 'Apa yang akan Anda lakukan jika ada warga yang mengeluh tentang pelayanan?',
             ],
             [
-                'tryout_id' => 3,
+                'tryout_id' => 1,
                 'topic_id' => 14, // Jejaring Kerja
                 'question' => 'Bagaimana cara Anda membangun kerja sama dalam tim?',
             ],

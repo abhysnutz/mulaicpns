@@ -11,4 +11,8 @@ class UserExam extends Model
     public function tryout(){
         return $this->belongsTo(Tryout::class);
     }
+
+    public function result(){
+        return $this->hasOne(ExamResult::class);
+    }
 }

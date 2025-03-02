@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\ExamResult;
 use App\Models\Question;
+use App\Models\Setting;
 use App\Models\Tryout;
 use App\Models\UserAnswer;
 use App\Models\UserExam;
@@ -101,7 +103,8 @@ class TryoutController extends Controller
                 'answers' => $answers->map(function ($answer) {
                     return [
                         'id' => $answer->id,
-                        'answer' => $answer->answer
+                        'answer' => $answer->answer,
+                        'option' => $answer->option,
                     ];
                 }),
                 'topic' => $question?->topic?->name
@@ -178,6 +181,47 @@ class TryoutController extends Controller
 
         $exam->update(['status' => 'Completed','end_time'=> Carbon::now()]);
 
-        return redirect()->route('dashboard.index')->with('success', 'Ujian telah diselesaikan.');
+        $total_twk = 0;
+        $total_tiu = 0;
+        $total_tkp = 0;
+
+        $user_answers = UserAnswer::where('user_exam_id',$exam_id)->get();
+
+        foreach ($user_answers as $user_answer) {
+            if ($user_answer?->answer?->question?->topic?->category == 'TWK') {
+                $total_twk += $user_answer?->answer?->score;  // 0 or 5
+            }
+            if ($user_answer?->answer?->question?->topic?->category == 'TIU') {
+                $total_tiu += $user_answer?->answer?->score;  // 0 or 5
+            }
+            if ($user_answer?->answer?->question?->topic?->category == 'TKP') {
+                $total_tkp += $user_answer?->answer?->score;  // 1 to 5
+            }
+        }
+
+        $total_score = $total_twk + $total_tiu + $total_tkp;
+
+        // Menentukan status kelulusan
+        $passing_grade_twk = Setting::where('key', 'passing_grade_twk')->value('value');
+        $passing_grade_tiu = Setting::where('key', 'passing_grade_tiu')->value('value');
+        $passing_grade_tkp = Setting::where('key', 'passing_grade_tkp')->value('value');
+
+        $isPassed = true;
+        
+        if ($total_twk < $passing_grade_twk) $isPassed = false;
+        if ($total_tiu < $passing_grade_tiu) $isPassed = false;
+        if ($total_tkp < $passing_grade_tkp) $isPassed = false;
+        
+
+        ExamResult::create([
+            'user_exam_id' => $exam_id,
+            'total_twk' => $total_twk,
+            'total_tiu' => $total_tiu,
+            'total_tkp' => $total_tkp,
+            'total_score' => $total_score,
+            'is_passed' => $isPassed
+        ]);
+
+        return redirect()->route('tryout.result.statistic',$exam_id);
     }
 }

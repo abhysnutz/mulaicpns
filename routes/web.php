@@ -37,6 +37,10 @@ Route::group(['prefix' => 'tryout', 'middleware' => ['auth'], 'as' => 'tryout.']
 
     Route::group(['prefix' => 'result', 'as' => 'result.'], function () {
         Route::get('/', [ExamController::class, 'index'])->name('index');
+        Route::get('{id}/statistic', [ExamController::class, 'statistic'])->name('statistic');
+        Route::get('{id}/explanation', [ExamController::class, 'explanation'])->name('explanation');
+        Route::get('questions', [ExamController::class, 'questions'])->name('questions');
+        Route::get('answer', [ExamController::class, 'answer'])->name('answer');
     });
 });
 

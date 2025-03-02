@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->id(); // ID unik untuk jawaban
             $table->foreignId('question_id')->constrained('questions')->onDelete('cascade'); // ID soal terkait
+            $table->char('option', 1); // Option Soal
             $table->string('answer'); // Opsi jawaban
             $table->integer('score'); // Skor untuk jawaban
-            $table->text('explanation')->nullable(); // Penjelasan jawaban (nullable)
             $table->timestamps(); // Kolom created_at dan updated_at
         });
     }

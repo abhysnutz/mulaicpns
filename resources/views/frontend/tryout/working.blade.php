@@ -279,18 +279,15 @@
                     // // Tampilkan opsi jawaban
                     let answers = "";
                     $.each(reply?.question?.answers, function(i, answer) {
-                        // answers += `<li><input type="radio" name="answer" value="${answer.id}"> ${answer.answer_text}</li>`;
-                        let labels = ['A', 'B', 'C', 'D', 'E']; // Label untuk jawaban
-                        let label = labels[i];
 
                         // Cek apakah jawaban sebelumnya sudah dipilih
                         let checked = reply?.selected_answer == answer.id ? "checked" : "";
 
                         answers += `
                             <div class="flex items-center mb-2">
-                                <label for="optionsRadios${label}" class="ml-3 w-full flex items-center">
-                                    <input name="answer" type="radio" id="optionsRadios${label}" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 mr-2" value="${answer?.id}" ${checked}>
-                                    <label for="optionsRadios${label}" class="translate-y-2">${label}. ${answer?.answer}</label>
+                                <label for="optionsRadios${answer?.option}" class="ml-3 w-full flex items-center">
+                                    <input name="answer" type="radio" id="optionsRadios${answer?.option}" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 mr-2" value="${answer?.id}" ${checked}>
+                                    <label for="optionsRadios${answer?.option}" class="translate-y-2">${answer?.option}. ${answer?.answer}</label>
                                 </label>
                             </div>
                         `

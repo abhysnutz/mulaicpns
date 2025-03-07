@@ -19,6 +19,32 @@
     <div class="pt-4 pb-20 sm:pt-6 sm:pb-6">
         <div class="mx-auto px-4 sm:px-6 md:px-5">
             <div class="bg-white px-5 pt-5 pb-8 rounded-lg">
+
+                @if ($payment_pending)
+                    <div class="error-notification bg-green-500 dark:bg-green-500 dark:opacity-90 rounded-xl p-3 sm:p-4 mb-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-white dark:text-green-500">
+                                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-2 sm:ml-3">
+                                <p class="text-xs sm:text-sm font-semibold text-white">Whoops!</p>
+                                <p class="text-xs sm:text-sm text-white">Silahkan Transfer sebesar Rp. <span class="font-bold">{{ number_format($payment_pending?->total, 0, ',', '.') }}</span>, sesuai riwayat transaksi dibawah .</p>
+                            </div>
+                            <div class="ml-auto pl-2 sm:pl-3">
+                                <button onclick="$('.error-notification').hide()" class="inline-flex text-white dark:text-green-600 focus:outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="h-4 sm:h-5 w-4 sm:w-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                
+
+
                 <div class="container mx-auto p-4 md:p-6 lg:grid lg:grid-cols-2 lg:gap-8">
                     <div class="bg-indigo-50 rounded-lg p-4 mb-6 lg:mb-0">
                         <h2 class="text-lg font-semibold text-blue-700 mb-4">PETUNJUK TRANSFER</h2>
@@ -89,7 +115,7 @@
                             <!-- Button Group -->
                             <div class="flex flex-wrap gap-3 pt-4">
                                 <button type="submit" class="px-4 py-2 bg-blue-500 text-white text-bold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"> Simpan </button>
-                                <button type="button" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"> WA Konfirmasi Donasi </button>
+                                <a href="https://api.whatsapp.com/send?phone=6282187299335&text=Konfirmasi%20Member%20Premium%2C%20%0A{{ env('APP_URL') }}%0A%0ANama%20%3A%20{{ Auth::user()?->name }}%0A%0ABesar%20Transfer%20%3A%20Rp.%20{{ number_format($payment_pending?->total, 0, ',', '.') }}%20%0A%0ATransfer%20Ke%20%3A%20{{ $payment_pending?->method?->name }}%20%0A%0AMohon%20Aktivasi" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"> WA Konfirmasi Donasi </a>
                                 {{-- <button type="button" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"> Petunjuk </button> --}}
                             </div>
                         </form>

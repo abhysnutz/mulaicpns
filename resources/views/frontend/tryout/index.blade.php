@@ -5,6 +5,29 @@
         <div class="bg-white px-5 pt-5 pb-8 rounded-lg">
             @include('frontend.breadcrumb', ['content' => 'Tryout'])
             
+            @if (session('error'))
+                <div class="error-notification bg-red-100 dark:bg-red-100 dark:opacity-90 rounded-xl border-l-4 border-red-primary p-3 sm:p-4 mb-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-red-400 dark:text-red-500">
+                                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-2 sm:ml-3">
+                            <p class="text-xs sm:text-sm font-semibold text-red-600">Whoops!</p>
+                            <p class="text-xs sm:text-sm font-medium text-red-500">{{ session('error') ?? '-' }}</p>
+                        </div>
+                        <div class="ml-auto pl-2 sm:pl-3">
+                            <button onclick="$('.error-notification').hide()" class="inline-flex text-red-500 dark:text-red-600 focus:outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="h-4 sm:h-5 w-4 sm:w-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div>
                 <ul role="list" class="mt-3 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                     @foreach ($tryouts as $tryout)

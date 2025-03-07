@@ -15,7 +15,8 @@ class PaymentController extends Controller
         $user = Auth::user();
         $payments = Payment::where('user_id', $user?->id)->orderBy('id','DESC')->get();
         $methods = PaymentMethod::orderBy('name','ASC')->get();
-        return view('frontend.payment.index',compact('methods','payments'));
+        $payment_pending = Payment::where('user_id', $user?->id)->where('status','pending')->orderBy('id','DESC')->first();
+        return view('frontend.payment.index',compact('methods','payments','payment_pending'));
     }
 
     public function store(Request $request){

@@ -17,6 +17,7 @@ class TryoutsSeeder extends Seeder
             [
                 'title' => 'Tryout CPNS 2025 - Gelombang 1',
                 'category' => 'Tryout',
+                'access_type' => 'premium',
                 'tryout_source_id' => 1, // Pastikan id ini ada di tabel tryout_sources
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -24,21 +25,8 @@ class TryoutsSeeder extends Seeder
             [
                 'title' => 'Latihan Soal CPNS - TIU',
                 'category' => 'Tryout',
+                'access_type' => 'free',
                 'tryout_source_id' => 2, // Pastikan id ini ada di tabel tryout_sources
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Latihan Soal CPNS - TWK',
-                'category' => 'Tryout',
-                'tryout_source_id' => 3, // Pastikan id ini ada di tabel tryout_sources
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Tryout CPNS 2025 - Gelombang 2',
-                'category' => 'Tryout',
-                'tryout_source_id' => 1, // Pastikan id ini ada di tabel tryout_sources
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

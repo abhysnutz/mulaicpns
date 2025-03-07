@@ -28,6 +28,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $user = Auth::user();
+        $sessionToken = \Str::random(60);
+        $user->session_id = $sessionToken;
+        $user->save();
+
+        // Simpan token di session
+        session(['user_session_token' => $sessionToken]);
+
         return redirect()->intended(route('dashboard.index', absolute: false));
     }
 

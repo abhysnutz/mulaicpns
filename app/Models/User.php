@@ -17,6 +17,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'session_id',
     ];
 
     protected $hidden = [
@@ -48,5 +49,19 @@ class User extends Authenticatable
 
     public function payments(){
         return $this->hasMany(Payment::class);
+    }
+
+    public function subscription()
+    {
+        return $this->hasOne(UserSubscription::class);
+    }
+
+    // Method untuk menentukan status subscription
+    public function getSubscriptionStatusAttribute()
+    {
+        if ($this->subscription && $this->subscription->end_date >= now()) {
+            return 'premium';
+        }
+        return 'free';
     }
 }

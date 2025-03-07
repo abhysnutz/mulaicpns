@@ -24,7 +24,7 @@
                                         @if ($exams->count())
                                             @foreach ($exams as $exam)
                                                 <tr>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $loop?->iteration }}</td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600 font-semibold sm:text-gray-500">
                                                         <a href="{{ route('tryout.result.statistic',$exam->id) }}" class="sm:no-underline underline">{{ $exam?->tryout?->title ?? '-' }}</a>
                                                     </td>

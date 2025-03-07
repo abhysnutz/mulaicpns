@@ -16,8 +16,12 @@
 
                 <!-- Content -->
                 <div class="p-4 text-gray-700">
-                    <p>Status Anda saat ini masih <span class="font-bold">Free</span>,</p>
-                    <p>Selamat berlatih di {{ env('APP_NAME') }}.</p>
+                    @if (Auth::user()?->subscription_status == 'free')
+                        <p>Status Anda saat ini masih <span class="font-bold capitalize">Free</span>,</p>
+                    @else
+                        <p>Status Anda saat ini adalah user <span class="font-bold capitalize">Premium</span> sampai tanggal <span class="font-bold">{{ \Carbon\Carbon::parse(Auth::user()?->subscription?->end_date)->translatedFormat('d F Y') }}</span>,</p>
+                    @endif
+                    <p>Selamat berlatih di <span class="font-bold">{{ env('APP_NAME') }}</span>.</p>
                     <p class="mt-2">SKD CPNS sudah semakin dekat, yuk akses latihan soal beserta pembahasan dengan cara upgrade statusmu, dapatkan fasilitas yang lebih lengkap.</p>
 
                     <!-- Buttons -->
@@ -29,7 +33,9 @@
                             </svg>
                             CHAT ADMIN
                         </a>
-                        <a href="{{ route('payment.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition">UPGRADE PREMIUM</a>
+                        <a href="{{ route('payment.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition">
+                            @if (Auth::user()?->subscription_status == 'free') UPGRADE PREMIUM @else PERPANJANG PREMIUM @endif
+                        </a>
                     </div>
                 </div>
             </div>

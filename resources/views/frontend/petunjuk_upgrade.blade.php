@@ -149,7 +149,7 @@
                 </ul>
                 <div class="mt-10 flex items-center justify-center">
                     <a href="{{ route('payment.index') }}" class="bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition-all">
-                        UPGRADE SEKARANG
+                        @if (Auth::user()?->subscription_status == 'free') UPGRADE SEKARANG @else PERPANJANG PREMIUM @endif
                     </a>
                 </div>
             </div>
